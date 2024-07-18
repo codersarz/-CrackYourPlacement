@@ -51,3 +51,49 @@ void makeGraph(Node* root,Node* prev,Node* &src,unordered_map<Node*,vector<Node*
         
         return ans;
     }
+//Approach-2 (Using LCA Concept:Minimum Distance between two nodes will be through LCA of them)
+//Time-Complexity->O(n)
+//Space-Complexity->O(h)
+Node *lca(Node* root,int a,int b){
+        if(root==NULL){
+            return NULL;
+        }
+        
+        if(root->data==a || root->data==b){
+            return root;
+        }
+        
+        Node* left=lca(root->left,a,b);
+        Node* right=lca(root->right,a,b);
+        
+        if(left!=NULL && right!=NULL){
+            return root;
+        }
+        if(left==NULL){
+            return right;
+        }
+        return left;
+    }
+    
+    int DistFromLCA(Node* root,int target,int distance){
+        if(root==NULL){
+            return -1;
+        }
+        if(root->data==target){
+            return distance;
+        }
+        int left=DistFromLCA(root->left,target,distance+1);
+        if(left!=-1){
+            return left;
+        }
+        return DistFromLCA(root->right,target,distance+1);
+        
+    }
+    int findDist(Node* root, int a, int b) {
+         Node* LCA=lca(root,a,b);
+         
+         int d1=DistFromLCA(LCA,a,0);
+         int d2=DistFromLCA(LCA,b,0);
+         
+         return d1+d2;
+    }
