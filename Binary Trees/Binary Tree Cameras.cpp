@@ -1,5 +1,31 @@
 //Approach-1
 //Time-Complexity->O(n)
+//Space-Complexity->O(n)
+unordered_set<TreeNode*> covered;
+    int cameras;
+    void dfs(TreeNode* root,TreeNode* parent){
+        if(root==NULL){
+            return;
+        }
+        dfs(root->left,root);
+        dfs(root->right,root);
+
+        if(parent==NULL && (!covered.count(root) || !covered.count(root->left) || !covered.count(root->right))){
+            cameras++;
+            covered.insert(root);
+            covered.insert(parent);
+            covered.insert(root->left);
+            covered.insert(root->right);
+        }
+    }
+    int minCameraCover(TreeNode* root) {
+        cameras=0;
+        covered.insert(NULL);
+        dfs(root,NULL);
+        return cameras;
+    }
+//Approach-2
+//Time-Complexity->O(n)
     //3 types of nodes
     //1->No camera,Not being watched
     //2->No camera,being Watched
