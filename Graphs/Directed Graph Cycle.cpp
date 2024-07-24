@@ -1,3 +1,4 @@
+//Using DFS Recursion
 //Time-Complexity->O(V+E)
 //Space-Complexity->O(V)
 bool isCycleDFS(vector<int> adj[],int u,vector<bool> &vis,vector<bool> &inRecursion){
@@ -28,4 +29,42 @@ bool isCycleDFS(vector<int> adj[],int u,vector<bool> &vis,vector<bool> &inRecurs
         }
         
         return false;
+    }
+
+//Using BFS (Kahn's Algorithm)
+//Time-Complexity->O(V+E)
+//Space-Complexity->O(V)
+bool isCyclic(int V, vector<int> adj[]) {
+        vector<int> indegree(V,0);
+        for(int u=0;u<V;u++){
+            for(int &v:adj[u]){
+                indegree[v]++;
+            }    
+        }
+        
+        queue<int> q;
+        for(int i=0;i<V;i++){
+            if(indegree[i]==0){
+                q.push(i);
+            }
+        }
+        
+        int nodeCount=0;
+        while(!q.empty()){
+            int u=q.front();
+            nodeCount++;
+            q.pop();
+            
+            for(int &v:adj[u]){
+                indegree[v]--;
+                if(indegree[v]==0){
+                    q.push(v);
+                }
+            }
+        }
+        
+        if(nodeCount==V){
+            return false;
+        }
+        return true;
     }
